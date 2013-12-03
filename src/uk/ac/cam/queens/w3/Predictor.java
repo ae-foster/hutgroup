@@ -1,5 +1,10 @@
 package uk.ac.cam.queens.w3;
 
+import com.sun.tools.javac.util.Pair;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jh
@@ -8,7 +13,22 @@ package uk.ac.cam.queens.w3;
  * To change this template use File | Settings | File Templates.
  */
 public class Predictor {
+    static DataLoader mDataLoader;
+
     public static void main (String[] args){
-        System.out.println("test");
+
+        // load data
+        try {
+            mDataLoader = new DataLoader(1000,100);  // load data (NumberOfTrainingRows,NumberOfTestRows)
+        } catch (IOException e){
+            System.err.println("Could not load datafile");
+            e.printStackTrace();
+            return;
+        }
+
+        ArrayList<Pair<Integer, Integer>> testCustomers = mDataLoader.getTestCustomers();
+        for (Pair<Integer,Integer> customer : testCustomers){
+            System.out.println("Calculating recommendation for user: " + customer.fst);
+        }
     }
 }
