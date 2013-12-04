@@ -1,8 +1,5 @@
 package uk.ac.cam.queens.w3;
 
-
-import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +23,7 @@ public class DataLoader {
     private final static String dataPath = "data/";
     private Customer[] customers = new Customer[500000]; // ~300k users
     private Product[] products = new Product[1000]; //505 products in dataset
-    private ArrayList<Pair<Integer,Integer>> testCustomers = new ArrayList<Pair<Integer,Integer>>();
+    private ArrayList<TestCase> testCustomers = new ArrayList<TestCase>();
 
     public DataLoader (int trainRows, int testRows) throws IOException {
 
@@ -86,7 +83,7 @@ public class DataLoader {
         while ((line = br.readLine()) != null && linesRead < (trainDataLines+testDataLines)) {
             // process the line.
             List<String> items = Arrays.asList(line.split("\\s*,\\s*"));
-            testCustomers.add(new Pair<Integer, Integer>(Integer.parseInt(items.get(0)),Integer.parseInt(items.get(1))));
+            testCustomers.add(new TestCase(Integer.parseInt(items.get(0)),Integer.parseInt(items.get(1))));
             linesRead++;
         }
 
@@ -94,7 +91,7 @@ public class DataLoader {
         System.out.println("Read " + linesRead + " lines");
     }
 
-    public ArrayList<Pair<Integer, Integer>> getTestCustomers() {
+    public ArrayList<TestCase> getTestCustomers() {
         return testCustomers;
     }
 }
