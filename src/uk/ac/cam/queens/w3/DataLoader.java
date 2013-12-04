@@ -1,6 +1,7 @@
 package uk.ac.cam.queens.w3;
 
-import com.sun.tools.javac.util.Pair;
+
+import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,6 +1,8 @@
 package uk.ac.cam.queens.w3;
 
-import com.sun.tools.javac.util.Pair;
+
+
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class Predictor {
 
         ArrayList<Pair<Integer, Integer>> testCustomers = mDataLoader.getTestCustomers();
         for (Pair<Integer,Integer> customer : testCustomers){
-            System.out.println("Calculating recommendation for user: " + customer.fst);
+            System.out.println("Calculating recommendation for user: " + customer.toString());
         }
     }
 }
