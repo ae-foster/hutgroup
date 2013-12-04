@@ -24,9 +24,54 @@ public class Predictor {
             return;
         }
 
+        // create instance of predictor
+        Predictor predictor = new Predictor();
+
         ArrayList<TestCase> testCustomers = mDataLoader.getTestCustomers();
-        for (TestCase customer : testCustomers){
-            System.out.println("Calculating recommendation for user: " + customer.getCustomerId());
+        double totalScore = 0;
+        for (TestCase testCase : testCustomers){
+            System.out.println("Calculating recommendation for user: " + testCase.getCustomerId());
+            ArrayList<Integer> recommendations = predictor.getRecommendations(testCase.getCustomerId());
+            double score = predictor.rateRecommendations(recommendations,testCase.getProductId());
+            totalScore += score;
+            System.out.println("Result: " + score);
+
         }
+        totalScore = totalScore / testCustomers.size();
+        System.out.println("Avarage score: " + totalScore);
+    }
+
+    public ArrayList<Integer> getRecommendations (int customerId) {
+        ArrayList<Integer> recommendations = new ArrayList<Integer>(6);
+        recommendations.add(10);
+        recommendations.add(11);
+        recommendations.add(12);
+        recommendations.add(13);
+        recommendations.add(14);
+        recommendations.add(15);
+        return recommendations;
+    }
+
+    public double rateRecommendations (ArrayList<Integer> recommendations, int productId){
+
+        if (recommendations.size() != 6){
+            System.out.println("Size of recommendations were not 6!");
+            return -1;
+        }
+
+        // map@6 calculation
+        double score = 0;
+        for (int i = 0; i<recommendations.size(); i++){
+            double tmpScore = 0;
+            for (int j = 0; j<=i; j++){
+                if (recommendations.get(j) == productId)
+                    tmpScore++;
+            }
+            tmpScore = tmpScore / (i+1);
+            score += tmpScore;
+        }
+        score = score / recommendations.size();
+
+        return score;
     }
 }
