@@ -54,6 +54,7 @@ public class DataLoader {
 
             try {
                 date = dataParser.parse(items.get(2));
+                date.setTime(date.getTime()-dataParser.parse("2012-04-01 00:00:00.000").getTime());
             } catch (ParseException e){
                 System.err.println("Failed to parse date");
                 e.printStackTrace();
