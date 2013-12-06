@@ -83,6 +83,22 @@ public class DataLoader {
         }
         numberOfProducts = maxProductId+1;
 
+        // initialise all products
+        for (int i = 0; i<numberOfProducts; i++){
+            if (products[i] == null){
+                products[i] = new Product(i);
+            }
+        }
+
+        // rescale so all weightedCounts are between 0 and 1
+        // find maximum weighted count
+        double maxWeightedCount = 0;
+        for (int i = 0; i<numberOfProducts; i++)
+            maxWeightedCount = Math.max(maxWeightedCount,products[i].getWeightedCount());
+        // normalize
+        for (int i = 0; i<numberOfProducts; i++)
+            products[i].setWeightedCount(products[i].getWeightedCount()/maxWeightedCount);
+
         // read test data
         while ((line = br.readLine()) != null && linesRead < (trainDataLines+testDataLines)) {
             // process the line.
@@ -122,11 +138,7 @@ public class DataLoader {
     public ArrayList<Product> getProducts(){
         ArrayList<Product> productList = new ArrayList<Product>();
         for (int i = 0; i<numberOfProducts; i++){
-            if (products[i] == null){
-                productList.add(i,new Product(i));
-            }else{
-                productList.add(i,new Product(products[i]));
-            }
+            productList.add(i,new Product(products[i]));
         }
         return productList;
     }

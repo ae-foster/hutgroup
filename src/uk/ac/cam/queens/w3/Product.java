@@ -53,4 +53,8 @@ public class Product {
             return (o1.getWeightedCount()<o2.getWeightedCount() ? 1 : -1);
         }
     }
+
+    public void setWeightedCount(double weightedCount) {
+        this.weightedCount = weightedCount;
+    }
 }
