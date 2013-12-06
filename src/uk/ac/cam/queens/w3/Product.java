@@ -1,5 +1,7 @@
 package uk.ac.cam.queens.w3;
 
+import java.util.Comparator;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jh
@@ -16,6 +18,13 @@ public class Product {
         this.productId = productId;
         this.count = 0;
         this.weightedCount = 0;
+    }
+
+    // copy constructor
+    public Product (Product product){
+        this.productId = product.productId;
+        this.count = product.count;
+        this.weightedCount = product.weightedCount;
     }
 
     public int getProductId() {
@@ -36,5 +45,12 @@ public class Product {
 
     public void incrementCount() {
         this.count++;
+    }
+
+    public static class WeightedCountComparator implements Comparator<Product> {
+        @Override
+        public int compare(Product o1, Product o2) {
+            return (o1.getWeightedCount()<o2.getWeightedCount() ? 1 : -1);
+        }
     }
 }

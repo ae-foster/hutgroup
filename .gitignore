@@ -2,3 +2,4 @@ data/test.csv
 data/train.csv
 .idea/*
 *.class
+data/output.csv

@@ -20,9 +20,11 @@ import java.util.Vector;
  */
 public class DataLoader {
     private final static String trainFile = "train.csv";
+    private final static String testFile = "test.csv";
     private final static String dataPath = "data/";
     private Customer[] customers = new Customer[500000]; // ~300k users
     private Product[] products = new Product[1000]; //505 products in dataset
+    private int numberOfProducts;
     private ArrayList<TestCase> testCustomers = new ArrayList<TestCase>();
 
     public DataLoader (int trainRows, int testRows) throws IOException {
@@ -72,12 +74,13 @@ public class DataLoader {
 
             customers[customerId].getOrders().add(order);
             products[order.getProductId()].incrementCount();
-            products[order.getProductId()].incrementWeightedCount(date.getTime() / 2000000000);
+            products[order.getProductId()].incrementWeightedCount(date.getTime());
 
             linesRead++;
             if (linesRead % 500000 == 0)
                 System.out.println("Read " + linesRead  + " lines");
         }
+        numberOfProducts = maxProductId+1;
 
         // read test data
         while ((line = br.readLine()) != null && linesRead < (trainDataLines+testDataLines)) {
@@ -93,5 +96,37 @@ public class DataLoader {
 
     public ArrayList<TestCase> getTestCustomers() {
         return testCustomers;
+    }
+
+    public ArrayList<TestCase> getRealTestCustomersFromFile () throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(dataPath+testFile));
+        String line;
+        int linesRead = 0;
+        ArrayList<TestCase> realTestCustomers = new ArrayList<TestCase>();
+
+        // read test data
+        while ((line = br.readLine()) != null) {
+            // process the line.
+            int customerId = Integer.parseInt(line);
+            realTestCustomers.add(new TestCase(customerId,-1));
+            linesRead++;;
+        }
+
+        br.close();
+        System.out.println("Read " + linesRead + " lines from test.csv");
+        return realTestCustomers;
+    }
+
+    // returns copy of product list
+    public ArrayList<Product> getProducts(){
+        ArrayList<Product> productList = new ArrayList<Product>();
+        for (int i = 0; i<numberOfProducts; i++){
+            if (products[i] == null){
+                productList.add(i,new Product(i));
+            }else{
+                productList.add(i,new Product(products[i]));
+            }
+        }
+        return productList;
     }
 }
