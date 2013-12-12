@@ -23,7 +23,7 @@ public class HutChallenge {
         // load data
         try {
             mDataWriter = new DataWriter();
-            mDataLoader = new DataLoader(20000,1000);  // load data (NumberOfTrainingRows,NumberOfTestRows)
+            mDataLoader = new DataLoader(2000000,10000);  // load data (NumberOfTrainingRows,NumberOfTestRows)
             if (!runOnRealTestSet)
                 testCustomers = mDataLoader.getTestCustomers();
             else

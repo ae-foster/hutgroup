@@ -25,6 +25,8 @@ public class DataLoader {
     private Customer[] customers = new Customer[500000]; // ~300k users
     private Product[] products = new Product[1000]; //505 products in dataset
     private int numberOfProducts;
+    private int numberOfCustomers;
+
     private ArrayList<TestCase> testCustomers = new ArrayList<TestCase>();
 
     public DataLoader (int trainRows, int testRows) throws IOException {
@@ -45,6 +47,7 @@ public class DataLoader {
 
         // read training data
         int maxProductId = 0;
+        int maxCustomerId = 0;
         SimpleDateFormat dataParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         while ((line = br.readLine()) != null && linesRead < trainDataLines) {
             // process the line.
@@ -63,6 +66,7 @@ public class DataLoader {
 
             Order order = new Order(Integer.parseInt(items.get(1)), date,items.get(3));
             maxProductId = Math.max(maxProductId,order.getProductId());
+            maxCustomerId = Math.max(maxCustomerId,customerId);
 
             if (customers[customerId] == null){
                 Customer customer = new Customer(customerId,new Vector<Order>());
@@ -82,6 +86,7 @@ public class DataLoader {
                 System.out.println("Read " + linesRead  + " lines");
         }
         numberOfProducts = maxProductId+1;
+        numberOfCustomers = maxCustomerId+1;
 
         // initialise all products
         for (int i = 0; i<numberOfProducts; i++){
@@ -141,5 +146,17 @@ public class DataLoader {
             productList.add(i,new Product(products[i]));
         }
         return productList;
+    }
+
+    public int getNumberOfProducts (){
+        return numberOfProducts;
+    }
+
+    public int getNumberOfCustomers(){
+        return numberOfProducts;
+    }
+
+    public Customer[] getCustomers(){
+        return customers;
     }
 }
