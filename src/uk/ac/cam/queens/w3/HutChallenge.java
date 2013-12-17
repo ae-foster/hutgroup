@@ -61,7 +61,7 @@ public class HutChallenge {
 
         }
         totalScore = totalScore / testCustomers.size();
-        System.out.println("Avarage score: " + totalScore);
+        System.out.println("Average score: " + totalScore);
 
         mDataWriter.close();
     }
