@@ -11,7 +11,7 @@ import java.util.Comparator;
  */
 public class Product {
     private int productId;
-    private double count;
+    private int count;
     private double weightedCount;
 
     public Product(int productId) {

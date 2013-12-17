@@ -22,6 +22,7 @@ public class DataLoader {
     private final static String trainFile = "train.csv";
     private final static String testFile = "test.csv";
     private final static String dataPath = "data/";
+    private static final double maxTimeWeightingInitialValue = 0.05;
     private Customer[] customers = new Customer[500000]; // ~300k users
     private Product[] products = new Product[1000]; //505 products in dataset
     private int numberOfProducts;
@@ -79,7 +80,9 @@ public class DataLoader {
 
             customers[customerId].getOrders().add(order);
             products[order.getProductId()].incrementCount();
+            // But surely we don't know how this will calibrate
             products[order.getProductId()].incrementWeightedCount(date.getTime());
+
 
             linesRead++;
             if (linesRead % 500000 == 0)
@@ -95,14 +98,14 @@ public class DataLoader {
             }
         }
 
-        // rescale so all weightedCounts are between 0 and 1
+        // rescale so all weightedCounts are between 0 and 0.02
         // find maximum weighted count
         double maxWeightedCount = 0;
         for (int i = 0; i<numberOfProducts; i++)
             maxWeightedCount = Math.max(maxWeightedCount,products[i].getWeightedCount());
         // normalize
         for (int i = 0; i<numberOfProducts; i++)
-            products[i].setWeightedCount(products[i].getWeightedCount()/maxWeightedCount);
+            products[i].setWeightedCount(maxTimeWeightingInitialValue*products[i].getWeightedCount()/maxWeightedCount);
 
         // read test data
         while ((line = br.readLine()) != null && linesRead < (trainDataLines+testDataLines)) {

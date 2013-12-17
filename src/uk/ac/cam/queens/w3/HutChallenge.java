@@ -35,7 +35,7 @@ public class HutChallenge {
         }
 
         // create instance of predictor
-        Predictor predictor = new Predictor(mDataLoader);
+        AiolliPredictor predictor = new AiolliPredictor(mDataLoader);
 
         double totalScore = 0;
         for (TestCase testCase : testCustomers){
@@ -58,6 +58,7 @@ public class HutChallenge {
             double score = Evaluator.rateRecommendations(recommendations,testCase.getProductId());
             totalScore += score;
             System.out.println("Result: " + score);
+            System.out.println();
 
         }
         totalScore = totalScore / testCustomers.size();
