@@ -1,6 +1,9 @@
 package uk.ac.cam.queens.w3.predictors;
 
 import uk.ac.cam.queens.w3.*;
+import uk.ac.cam.queens.w3.util.Customer;
+import uk.ac.cam.queens.w3.util.Order;
+import uk.ac.cam.queens.w3.util.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +19,7 @@ import java.util.Vector;
 public class Predictor implements PredictionMaker {
     DataLoader mDataLoader;
     private double productIntersection [][]; // productIntersection [a][b] is the intersection a -> b, could be asymmetric!
+    ArrayList<Product> mProducts;
 
     public Predictor (DataLoader dataLoader) {
         mDataLoader = dataLoader;
@@ -40,24 +44,59 @@ public class Predictor implements PredictionMaker {
         }
     }
 
+    private static ArrayList<Product> cachedBaseline;
+
+    public ArrayList<Product> initialiseBaseline(){
+
+        // calculate cache
+        if (cachedBaseline == null){
+            ArrayList<Product> products = mDataLoader.getProducts();
+
+            for (Customer customer : mDataLoader.getCustomers())
+                for (Order order : customer.getOrders())
+                    products.get(order.getProductId()).incrementWeightedCount(order.getTransactionTime().getTime());
+
+            // rescale so all weightedCounts are between 0 and 1
+            // find maximum weighted count
+            double maxWeightedCount = 0;
+            for (int i = 0; i<products.size(); i++)
+                maxWeightedCount = Math.max(maxWeightedCount,products.get(i).getWeightedCount());
+            // normalize
+            for (int i = 0; i<products.size(); i++)
+                products.get(i).setWeightedCount(products.get(i).getWeightedCount()/maxWeightedCount);
+            cachedBaseline = products;
+        }
+
+        // copy cache
+        ArrayList<Product> products = new ArrayList<Product>();
+        for (Product product : cachedBaseline)
+            products.add(product.getProductId(),product.copy());
+
+        return products;
+    }
+
+
     public ArrayList<Integer> getRecommendations (int customerId) {
 
-        ArrayList<Product> products = mDataLoader.getProducts();
+        mProducts = initialiseBaseline();
+
+        /*
         if (mDataLoader.getCustomers()[customerId] != null){
             Vector<Order> orders = mDataLoader.getCustomers()[customerId].getOrders();
             for (Order order : orders){
                 // for each order, sum intersection
                 int productId = order.getProductId();
                 for (int i = 0; i<productIntersection[productId].length; i++){
-                    products.get(i).incrementWeightedCount(productIntersection[productId][i]);
+                    mProducts.get(i).incrementWeightedCount(productIntersection[productId][i]);
                 }
             }
         }
-        Collections.sort(products,new Product.WeightedCountComparator());
+        */
+        Collections.sort(mProducts,new Product.WeightedCountComparator());
 
         ArrayList<Integer> recommendations = new ArrayList<Integer>(6);
         for (int i = 0; i<6; i++){
-            recommendations.add(products.get(i).getProductId());
+            recommendations.add(mProducts.get(i).getProductId());
         }
         return recommendations;
     }

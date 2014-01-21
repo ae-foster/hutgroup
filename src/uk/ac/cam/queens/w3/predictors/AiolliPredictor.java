@@ -1,6 +1,9 @@
 package uk.ac.cam.queens.w3.predictors;
 
 import uk.ac.cam.queens.w3.*;
+import uk.ac.cam.queens.w3.util.Customer;
+import uk.ac.cam.queens.w3.util.Order;
+import uk.ac.cam.queens.w3.util.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;

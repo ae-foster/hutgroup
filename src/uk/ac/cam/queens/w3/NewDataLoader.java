@@ -1,5 +1,10 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.util.Customer;
+import uk.ac.cam.queens.w3.util.Order;
+import uk.ac.cam.queens.w3.util.Product;
+import uk.ac.cam.queens.w3.util.TestCase;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
