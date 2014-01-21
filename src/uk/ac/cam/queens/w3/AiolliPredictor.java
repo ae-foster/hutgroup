@@ -14,7 +14,7 @@ public class AiolliPredictor implements  PredictionMaker{
     private int productIntersections[][]; // stores size of intersections of products i and j
                                              // the intersection matrix will now be symmetric, not so the weights
     private double weightSquareSums[]; // stores the norm squares of the weights
-    private static double ALPHA = 0.2;
+    private static double ALPHA = 0;
     private static double BETA = 0.2;
     private static final double THRESHOLD = 2E-5;
 
@@ -102,7 +102,7 @@ public class AiolliPredictor implements  PredictionMaker{
             for (int i=0; i<mDataLoader.getNumberOfProducts(); ++i)
             {
                 // Just watch to divide by zero, and add an "information factor"
-                products.get(i).incrementWeightedCount(weightSquareSums[i] > 1E-12 ?
+                products.get(i).incrementWeightedCount(weightSquareSums[i] > 1E12 ?
                         Math.exp(-1/informationTotal)*tempWeightSum[i]/ Math.pow(weightSquareSums[i], BETA) : 0);
             }
         }

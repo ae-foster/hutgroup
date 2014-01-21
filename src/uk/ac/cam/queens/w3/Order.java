@@ -10,15 +10,19 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class Order {
+    private int customerId;
     private int productId;
     private Date transactionTime;
     private String countryCode;
 
-    public Order(int productId, Date transactionTime, String countryCode) {
+    public Order(int customerId, int productId, Date transactionTime, String countryCode) {
+        this.customerId = customerId;
         this.productId = productId;
         this.transactionTime = transactionTime;
         this.countryCode = countryCode;
     }
+
+    public int getCustomerId() {return customerId;}
 
     public int getProductId() {
         return productId;

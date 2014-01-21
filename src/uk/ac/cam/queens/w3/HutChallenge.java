@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Time: 7:28 PM
  * To change this template use File | Settings | File Templates.
  */
+
 public class HutChallenge {
     static DataLoader mDataLoader;
     static DataWriter mDataWriter;
@@ -22,6 +23,9 @@ public class HutChallenge {
 
         // load data
         try {
+
+            //SortedDataLoader newDataLoader = new SortedDataLoader(2000000);
+
             mDataWriter = new DataWriter();
             mDataLoader = new DataLoader(2000000,10000);  // load data (NumberOfTrainingRows,NumberOfTestRows)
             if (!runOnRealTestSet)
@@ -35,7 +39,7 @@ public class HutChallenge {
         }
 
         // create instance of predictor
-        AiolliPredictor predictor = new AiolliPredictor(mDataLoader);
+        PredictionMaker predictor = new AiolliPredictor(mDataLoader);
 
         double totalScore = 0;
         for (TestCase testCase : testCustomers){

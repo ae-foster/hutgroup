@@ -50,7 +50,7 @@ public class Product {
     public static class WeightedCountComparator implements Comparator<Product> {
         @Override
         public int compare(Product o1, Product o2) {
-            return (o1.getWeightedCount()<o2.getWeightedCount() ? 1 : -1);
+            return (o1.getWeightedCount()<o2.getWeightedCount() ? 1 : o1.getWeightedCount()<=o2.getWeightedCount() ? 0 : -1);
         }
     }
 

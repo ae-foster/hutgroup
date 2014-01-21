@@ -65,7 +65,7 @@ public class DataLoader {
                 return;
             }
 
-            Order order = new Order(Integer.parseInt(items.get(1)), date,items.get(3));
+            Order order = new Order(Integer.parseInt(items.get(2)), Integer.parseInt(items.get(1)), date,items.get(3));
             maxProductId = Math.max(maxProductId,order.getProductId());
             maxCustomerId = Math.max(maxCustomerId,customerId);
 
