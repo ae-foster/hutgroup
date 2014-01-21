@@ -1,5 +1,10 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.util.Customer;
+import uk.ac.cam.queens.w3.util.Order;
+import uk.ac.cam.queens.w3.util.Product;
+import uk.ac.cam.queens.w3.util.TestCase;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,7 +22,7 @@ public class NewDataLoader {
     private final static String testFile = "test.csv";
     private final static String dataPath = "data/";
     // private final static int noRecords = 2224535;
-     private final static int noRecords = 550000;
+     private final static int noRecords = 31000;
     private final static int maxCustomerId = 337405;
     private final static int maxProductId = 505;
     private List<Order> records = new Vector<Order>();
@@ -93,7 +98,7 @@ public class NewDataLoader {
     public void sortByDate(List<Order> array) {Collections.sort(array, new Comparator<Order>() {
         @Override
         public int compare(Order o1, Order o2) {
-            return o1.getTransactionTime().getTime() - o2.getTransactionTime().getTime() > 0 ? 1 : -1;
+            return (o1.getTransactionTime().getTime() - o2.getTransactionTime().getTime()) > 0 ? 1 : -1;
         }
     });}
 

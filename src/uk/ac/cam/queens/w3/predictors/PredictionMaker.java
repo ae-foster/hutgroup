@@ -1,4 +1,4 @@
-package uk.ac.cam.queens.w3;
+package uk.ac.cam.queens.w3.predictors;
 
 import java.util.ArrayList;
 

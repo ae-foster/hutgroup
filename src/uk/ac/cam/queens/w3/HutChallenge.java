@@ -1,5 +1,11 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.predictors.PredictionMaker;
+import uk.ac.cam.queens.w3.predictors.Predictor;
+import uk.ac.cam.queens.w3.util.DataWriter;
+import uk.ac.cam.queens.w3.util.Evaluator;
+import uk.ac.cam.queens.w3.util.TestCase;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,7 +45,7 @@ public class HutChallenge {
         }
 
         // create instance of predictor
-        PredictionMaker predictor = new AiolliPredictor(mDataLoader);
+        PredictionMaker predictor = new Predictor(mDataLoader);
 
         double totalScore = 0;
         for (TestCase testCase : testCustomers){
@@ -59,7 +65,7 @@ public class HutChallenge {
                 mDataWriter.write(outputLine);
             }
 
-            double score = Evaluator.rateRecommendations(recommendations,testCase.getProductId());
+            double score = Evaluator.rateRecommendations(recommendations, testCase.getProductId());
             totalScore += score;
             System.out.println("Result: " + score);
             System.out.println();

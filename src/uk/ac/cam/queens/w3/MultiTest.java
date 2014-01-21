@@ -1,5 +1,10 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.predictors.FlexiPredictor;
+import uk.ac.cam.queens.w3.util.DataWriter;
+import uk.ac.cam.queens.w3.util.Evaluator;
+import uk.ac.cam.queens.w3.util.TestCase;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,7 +32,7 @@ public class MultiTest {
             //SortedDataLoader newDataLoader = new SortedDataLoader(2000000);
 
             mDataWriter = new DataWriter();
-            mDataLoader = new NewDataLoader(500000);  // load data (NumberOfTrainingRows)
+            mDataLoader = new NewDataLoader(30000);  // load data (NumberOfTrainingRows)
             if (!runOnRealTestSet)
                 testCustomers = mDataLoader.getTestCustomers();
             else
@@ -69,7 +74,7 @@ public class MultiTest {
                     mDataWriter.write(outputLine);
                 }
 
-                double score = Evaluator.rateRecommendations(recommendations,testCase.getProductId());
+                double score = Evaluator.rateRecommendations(recommendations, testCase.getProductId());
                 totalScore += score;
 
                 // System.out.println("The answer was" + testCase.getProductId());
