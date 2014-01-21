@@ -42,12 +42,11 @@ public class MultiTest {
         FlexiPredictor predictor = new FlexiPredictor(mDataLoader);
 
 
-        for (int x = 0; x <10 ; x+=2) { for (int y = 0; y <= 5; y+=1)
+        for (int x = 10; x <= 15 ; x+=1)
         {
             double param1 = Math.pow(2, x);
-            double param2 = y/5.0;
-            System.out.println("Parameter values " + param1 + " " + param2) ;
-            predictor.resetParameters(param1,param2);
+            System.out.println("Parameter values " + param1) ;
+            predictor.resetParameters(param1);
             predictor.train();
 
             System.out.println("Running over test cases, of which there are " + testCustomers.size());
@@ -80,7 +79,7 @@ public class MultiTest {
             }
             totalScore = totalScore / testCustomers.size();
             System.out.println("Average score: " + totalScore);
-        }}
+        }
 
         mDataWriter.close();
     }

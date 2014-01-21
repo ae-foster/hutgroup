@@ -8,13 +8,15 @@ import java.util.*;
 public class FlexiPredictor implements PredictionMaker {
 
 private NewDataLoader dataLoader;
-private double A = 1E-7;
+private double A = 5.4E-7;
 private double B = 0;
 private double C = 0;
+private Date lastestTime = new Date();
 double[] baselineScores;
 List<Order> training;
 Customer[] customers;
-int[][] productIntersection;
+double[][] productIntersection;
+double[] columnTotals;
 
     FlexiPredictor(NewDataLoader dataLoader)
     {
@@ -24,11 +26,13 @@ int[][] productIntersection;
         pretrain();
     }
 
-    public void train(){
+    public void pretrain(){
 
+        lastestTime = training.get(dataLoader.getTrainRows()-1).getTransactionTime();
 
         // Compute intersection matrix
-        productIntersection = new int[dataLoader.getMaxProductId()+1][dataLoader.getMaxProductId()+1];
+        productIntersection = new double[dataLoader.getMaxProductId()+1][dataLoader.getMaxProductId()+1];
+        columnTotals = new double[dataLoader.getMaxProductId()+1];
        for (Customer jim : customers)
         {
             if (jim == null) continue;
@@ -38,19 +42,21 @@ int[][] productIntersection;
                 {
                     // Buy i and then j
                     long t = (jimsOrders.get(j).getTransactionTime().getTime() - jimsOrders.get(i).getTransactionTime().getTime())/1000;
-                    productIntersection[jimsOrders.get(i).getProductId()][jimsOrders.get(j).getProductId()] += 1; // Math.exp(-C * t);
-                    //productIntersection[jimsOrders.get(j).getProductId()][jimsOrders.get(i).getProductId()] += C;
+                    productIntersection[jimsOrders.get(i).getProductId()][jimsOrders.get(j).getProductId()] += Math.exp(-C * t);
+
+                    columnTotals[jimsOrders.get(j).getProductId()] += Math.exp(-C * t);
                 }
         }
     }
 
-    public void pretrain() {
+    public void train() {
+
         // Generate a baseline score
         baselineScores = new double[dataLoader.getMaxProductId()+1];
         for (int i =0; i<dataLoader.getTrainRows(); ++i)
         {
-            long t = (dataLoader.getLatestTime().getTime() - training.get(i).getTransactionTime().getTime())/1000;
-            baselineScores[training.get(i).getProductId()] += 1; // Math.exp(-A * t); // Might not be appropriate
+            long t = (lastestTime.getTime() - training.get(i).getTransactionTime().getTime())/1000;
+            baselineScores[training.get(i).getProductId()] += Math.exp(-A*t); // Might not be appropriate
         }
 
     }
@@ -70,25 +76,28 @@ int[][] productIntersection;
             for (Order order : orders){
                 // for each order, sum intersection
                 int productId = order.getProductId();
+                long t = (lastestTime.getTime() - order.getTransactionTime().getTime())/1000;
                 for (int i = 0; i<productIntersection[productId].length; i++){
-                    products.get(i).incrementWeightedCount(B * productIntersection[productId][i]);
+                    if (columnTotals[i] != 0 )
+                        products.get(i).incrementWeightedCount(Math.exp(-A * t)*B * ((productIntersection[productId][i]/columnTotals[i]) - 1/505));
                 }
             }
         }
+
 
         Collections.sort(products, new Product.WeightedCountComparator());
 
         ArrayList<Integer> recommendations = new ArrayList<Integer>(6);
         for (int i = 0; i<6; i++){
             recommendations.add(products.get(i).getProductId());
-            // System.out.println("Recommending product " + products.get(i).getProductId());
+//            System.out.println("Recommending product " + products.get(i).getProductId()
+//                    + " with score " + products.get(i).getWeightedCount());
         }
         return recommendations;
     }
       
-    public void resetParameters(double B, double C)
+    public void resetParameters(double B)
     {
         this.B = B;
-        this.C = C;
     }
 }
