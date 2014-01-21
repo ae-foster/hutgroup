@@ -53,8 +53,11 @@ public class Predictor implements PredictionMaker {
             ArrayList<Product> products = mDataLoader.getProducts();
 
             for (Customer customer : mDataLoader.getCustomers())
-                for (Order order : customer.getOrders())
-                    products.get(order.getProductId()).incrementWeightedCount(order.getTransactionTime().getTime());
+                for (Order order : customer.getOrders()){
+                    long t = mDataLoader.getLatestTimeInTrainingSet().getTime() - order.getTransactionTime().getTime();
+                    double A = 5 * 10E-11;
+                    products.get(order.getProductId()).incrementWeightedCount(Math.exp(-1*t*A));
+                }
 
             // rescale so all weightedCounts are between 0 and 1
             // find maximum weighted count
