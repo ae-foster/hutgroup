@@ -1,5 +1,7 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.predictors.FlexiPredictor;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class MultiTest {
             //SortedDataLoader newDataLoader = new SortedDataLoader(2000000);
 
             mDataWriter = new DataWriter();
-            mDataLoader = new NewDataLoader(500000);  // load data (NumberOfTrainingRows)
+            mDataLoader = new NewDataLoader(30000);  // load data (NumberOfTrainingRows)
             if (!runOnRealTestSet)
                 testCustomers = mDataLoader.getTestCustomers();
             else

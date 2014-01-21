@@ -1,4 +1,6 @@
-package uk.ac.cam.queens.w3;
+package uk.ac.cam.queens.w3.predictors;
+
+import uk.ac.cam.queens.w3.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +9,7 @@ import java.util.Vector;
 /**
  * Created by Adam on 17/12/13.
  */
-public class AiolliPredictor implements  PredictionMaker{
+public class AiolliPredictor implements PredictionMaker {
 
     DataLoader mDataLoader;
     private double productWeights [][]; // stores weights between products, w_{ij} as in Aiolli

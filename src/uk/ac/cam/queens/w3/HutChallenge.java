@@ -1,5 +1,7 @@
 package uk.ac.cam.queens.w3;
 
+import uk.ac.cam.queens.w3.predictors.Predictor;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,7 +41,7 @@ public class HutChallenge {
         }
 
         // create instance of predictor
-        PredictionMaker predictor = new AiolliPredictor(mDataLoader);
+        PredictionMaker predictor = new Predictor(mDataLoader);
 
         double totalScore = 0;
         for (TestCase testCase : testCustomers){

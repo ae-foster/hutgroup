@@ -1,4 +1,6 @@
-package uk.ac.cam.queens.w3;
+package uk.ac.cam.queens.w3.predictors;
+
+import uk.ac.cam.queens.w3.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +13,7 @@ import java.util.Vector;
  * Time: 11:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Predictor implements PredictionMaker{
+public class Predictor implements PredictionMaker {
     DataLoader mDataLoader;
     private double productIntersection [][]; // productIntersection [a][b] is the intersection a -> b, could be asymmetric!
 
