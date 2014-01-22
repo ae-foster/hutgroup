@@ -19,7 +19,6 @@ import java.util.Vector;
 public class Predictor implements PredictionMaker {
     DataLoader mDataLoader;
     private double productIntersection [][]; // productIntersection [a][b] is the intersection a -> b, could be asymmetric!
-    ArrayList<Product> mProducts;
 
     public Predictor (DataLoader dataLoader) {
         mDataLoader = dataLoader;
@@ -81,25 +80,39 @@ public class Predictor implements PredictionMaker {
 
     public ArrayList<Integer> getRecommendations (int customerId) {
 
-        mProducts = initialiseBaseline();
+        ArrayList<Product> products = initialiseBaseline();
+        ArrayList<Product> products2 = initialiseBaseline();
 
-        /*
+
         if (mDataLoader.getCustomers()[customerId] != null){
             Vector<Order> orders = mDataLoader.getCustomers()[customerId].getOrders();
             for (Order order : orders){
                 // for each order, sum intersection
                 int productId = order.getProductId();
                 for (int i = 0; i<productIntersection[productId].length; i++){
-                    mProducts.get(i).incrementWeightedCount(productIntersection[productId][i]);
+                    products.get(i).incrementWeightedCount(productIntersection[productId][i]);
                 }
             }
         }
-        */
-        Collections.sort(mProducts,new Product.WeightedCountComparator());
 
-        ArrayList<Integer> recommendations = new ArrayList<Integer>(6);
+        Collections.sort(products,new Product.WeightedCountComparator());
+        Collections.sort(products2,new Product.WeightedCountComparator());
+
+        int slotsToUseForIntersection = 3;
+
+        ArrayList<Integer> recommendations = new ArrayList<Integer>();
+        for (int i = 0; i<slotsToUseForIntersection; i++){
+            recommendations.add(products.get(i).getProductId());
+        }
         for (int i = 0; i<6; i++){
-            recommendations.add(mProducts.get(i).getProductId());
+            if (recommendations.size() == 6) return  recommendations;
+            boolean coolFound = false;
+            for (int j = 0; j<slotsToUseForIntersection; j++){
+                if (products2.get(i).getProductId() == recommendations.get(j))
+                    coolFound = true;
+            }
+            if (coolFound) continue;
+            recommendations.add(products2.get(i).getProductId());
         }
         return recommendations;
     }

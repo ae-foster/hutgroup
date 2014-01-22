@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class Evaluator {
-    public static double rateRecommendations (ArrayList<Integer> recommendations, int productId){
+    public static double rateRecommendations (ArrayList<Integer> recommendations, ArrayList<Integer> orders){
 
         if (recommendations.size() != 6){
             System.out.println("Size of recommendations were not 6!");
@@ -22,7 +22,7 @@ public class Evaluator {
         for (int i = 0; i<recommendations.size(); i++){
             double tmpScore = 0;
             for (int j = 0; j<=i; j++){
-                if (recommendations.get(j) == productId)
+                if (orderContains(recommendations.get(j),orders))
                     tmpScore++;
             }
             tmpScore = tmpScore / (i+1);
@@ -31,5 +31,12 @@ public class Evaluator {
         score = score / recommendations.size();
 
         return score;
+    }
+
+    private static boolean orderContains (int productId, ArrayList<Integer> orders){
+        for (Integer product : orders)
+            if (product == productId)
+                return true;
+        return false;
     }
 }

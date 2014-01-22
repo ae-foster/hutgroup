@@ -45,10 +45,25 @@ public class DataLoader {
         int maxProductId = 0;
         int maxCustomerId = 0;
         int recordsProcessed = 0;
+
+        HashMap<Integer,TestCase> testCaseHashMap = new HashMap<Integer, TestCase>();
+
         for (Order order : records) {
 
             if (recordsProcessed > trainDataLines){
-                testCustomers.add(new TestCase(order.getCustomerId(),order.getProductId()));
+
+                if (testCaseHashMap.get(order.getCustomerId()) != null){
+                    // test customer already loaded
+                    testCaseHashMap.get(order.getCustomerId()).getProducts().add(order.getProductId());
+                } else {
+                    // test customer not loaded, load
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    list.add(order.getProductId());
+                    TestCase newTestCase = new TestCase(order.getCustomerId(),list);
+                    testCustomers.add(newTestCase);
+                    testCaseHashMap.put(newTestCase.getCustomerId(),newTestCase);
+                }
+
             } else {
                 maxProductId = Math.max(maxProductId,order.getProductId());
                 maxCustomerId = Math.max(maxCustomerId,order.getCustomerId());
@@ -155,7 +170,7 @@ public class DataLoader {
         while ((line = br.readLine()) != null) {
             // process the line.
             int customerId = Integer.parseInt(line);
-            realTestCustomers.add(new TestCase(customerId,-1));
+            realTestCustomers.add(new TestCase(customerId,null));
             linesRead++;;
         }
 

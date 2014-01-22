@@ -144,8 +144,9 @@ public class NewDataLoader {
 
     public void initialiseTestCustomers()
     {
-        for (int j = trainRows; j<noRecords; ++j)
-            testCustomers.add(new TestCase(records.get(j).getCustomerId(), records.get(j).getProductId()));
+        // Use DataLoader class!
+        //for (int j = trainRows; j<noRecords; ++j)
+            //testCustomers.add(new TestCase(records.get(j).getCustomerId(), records.get(j).getProductId()));
     }
 
     public ArrayList<TestCase> getTestCustomers() {
@@ -162,7 +163,7 @@ public class NewDataLoader {
         while ((line = br.readLine()) != null) {
             // process the line.
             int customerId = Integer.parseInt(line);
-            realTestCustomers.add(new TestCase(customerId,-1));
+            realTestCustomers.add(new TestCase(customerId,null));
             linesRead++;;
         }
 

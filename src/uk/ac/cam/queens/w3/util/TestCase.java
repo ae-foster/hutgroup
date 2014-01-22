@@ -1,5 +1,7 @@
 package uk.ac.cam.queens.w3.util;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jh
@@ -9,18 +11,18 @@ package uk.ac.cam.queens.w3.util;
  */
 public class TestCase {
     int customerId;
-    int productId;
+    ArrayList<Integer> products;
 
-    public TestCase(int customerId, int productId) {
+    public TestCase(int customerId, ArrayList<Integer> products) {
         this.customerId = customerId;
-        this.productId = productId;
+        this.products = products;
     }
 
     public int getCustomerId() {
         return customerId;
     }
 
-    public int getProductId() {
-        return productId;
+    public ArrayList<Integer> getProducts() {
+        return products;
     }
 }

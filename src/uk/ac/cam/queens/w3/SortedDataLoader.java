@@ -272,8 +272,9 @@ public class SortedDataLoader {
 
     public void initialiseTestCustomers()
     {
-        for (int j = trainRows; j<noRecords; ++j)
-            testCustomers.add(new TestCase(records[j][CUSTOMER], records[j][PRODUCT]));
+        // Use DataLoader class!
+        //for (int j = trainRows; j<noRecords; ++j)
+            //testCustomers.add(new TestCase(records[j][CUSTOMER], records[j][PRODUCT]));
     }
 
     public ArrayList<TestCase> getTestCustomers() {
@@ -292,7 +293,7 @@ public class SortedDataLoader {
         while ((line = br.readLine()) != null) {
             // process the line.
             int customerId = Integer.parseInt(line);
-            realTestCustomers.add(new TestCase(customerId,-1));
+            realTestCustomers.add(new TestCase(customerId,null));
             linesRead++;;
         }
 

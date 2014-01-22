@@ -33,7 +33,7 @@ public class HutChallenge {
             //SortedDataLoader newDataLoader = new SortedDataLoader(2000000);
 
             mDataWriter = new DataWriter();
-            mDataLoader = new DataLoader(2000000,10000);  // load data (NumberOfTrainingRows,NumberOfTestRows)
+            mDataLoader = new DataLoader(2000000,100000);  // load data (NumberOfTrainingRows,NumberOfTestRows)
             if (!runOnRealTestSet)
                 testCustomers = mDataLoader.getTestCustomers();
             else
@@ -65,7 +65,7 @@ public class HutChallenge {
                 mDataWriter.write(outputLine);
             }
 
-            double score = Evaluator.rateRecommendations(recommendations, testCase.getProductId());
+            double score = Evaluator.rateRecommendations(recommendations,testCase.getProducts());
             totalScore += score;
             System.out.println("Result: " + score);
             System.out.println();

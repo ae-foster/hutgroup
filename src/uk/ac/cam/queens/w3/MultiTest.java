@@ -74,7 +74,7 @@ public class MultiTest {
                     mDataWriter.write(outputLine);
                 }
 
-                double score = Evaluator.rateRecommendations(recommendations, testCase.getProductId());
+                double score = Evaluator.rateRecommendations(recommendations, testCase.getProducts());
                 totalScore += score;
 
                 // System.out.println("The answer was" + testCase.getProductId());
