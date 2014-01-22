@@ -68,12 +68,12 @@ public class HutChallenge {
 
                 outputLine += "\n";
                 mDataWriter.write(outputLine);
+            } else {
+                double score = Evaluator.rateRecommendations(recommendations,testCase.getProducts());
+                totalScore += score;
+                System.out.println("Result: " + score);
+                System.out.println();
             }
-
-            double score = Evaluator.rateRecommendations(recommendations,testCase.getProducts());
-            totalScore += score;
-            System.out.println("Result: " + score);
-            System.out.println();
 
         }
         totalScore = totalScore / testCustomers.size();
