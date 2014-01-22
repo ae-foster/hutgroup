@@ -52,7 +52,7 @@ public class MultiTest {
             double param1 = Math.pow(2, x);
             System.out.println("Parameter values " + param1) ;
             predictor.resetParameters(param1);
-            predictor.train();
+            predictor.train(null);
 
             System.out.println("Running over test cases, of which there are " + testCustomers.size());
             double totalScore = 0;

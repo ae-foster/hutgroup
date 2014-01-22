@@ -54,7 +54,7 @@ double[] columnTotals;
         }
     }
 
-    public void train() {
+    public void train(HashMap<String,Double> params) {
 
         // Generate a baseline score
         baselineScores = new double[dataLoader.getMaxProductId()+1];

@@ -7,6 +7,7 @@ import uk.ac.cam.queens.w3.util.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -16,31 +17,23 @@ import java.util.Vector;
  * Time: 11:00 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Predictor implements PredictionMaker {
+public abstract class Predictor implements PredictionMaker {
     DataLoader mDataLoader;
-    private double productIntersection [][]; // productIntersection [a][b] is the intersection a -> b, could be asymmetric!
+    private Double baselineExpDecay = 5 * 10E-11;
 
     public Predictor (DataLoader dataLoader) {
         mDataLoader = dataLoader;
 
-        train();
+        preTrain();
     }
 
-    public void train(){
-        productIntersection = new double[mDataLoader.getNumberOfProducts()][mDataLoader.getNumberOfProducts()];
-        Customer[] customers = mDataLoader.getCustomers();
+    public void preTrain (){
 
-        for (int i = 0; i<mDataLoader.getNumberOfCustomers(); i++){
-            Customer customer = customers[i];
-            if (customer == null) continue;
-            Vector<Order> orders = customer.getOrders();
-            for (int j = 0; j<orders.size(); j++){
-                for (int k = j+1; k<orders.size(); k++){
-                    // customer i bought product k after product j
-                    productIntersection[orders.get(j).getProductId()][orders.get(k).getProductId()] += 0.1;
-                }
-            }
-        }
+    }
+
+    public void train(HashMap<String,Double> params){
+        if (params.get("baselineExpDecay") != null)
+            baselineExpDecay = params.get("baselineExpDecay");
     }
 
     private static ArrayList<Product> cachedBaseline;
@@ -54,8 +47,7 @@ public class Predictor implements PredictionMaker {
             for (Customer customer : mDataLoader.getCustomers())
                 for (Order order : customer.getOrders()){
                     long t = mDataLoader.getLatestTimeInTrainingSet().getTime() - order.getTransactionTime().getTime();
-                    double A = 5 * 10E-11;
-                    products.get(order.getProductId()).incrementWeightedCount(Math.exp(-1*t*A));
+                    products.get(order.getProductId()).incrementWeightedCount(Math.exp(-1*t*baselineExpDecay));
                 }
 
             // rescale so all weightedCounts are between 0 and 1
@@ -77,43 +69,6 @@ public class Predictor implements PredictionMaker {
         return products;
     }
 
+    public abstract ArrayList<Integer> getRecommendations (int customerId);
 
-    public ArrayList<Integer> getRecommendations (int customerId) {
-
-        ArrayList<Product> products = initialiseBaseline();
-        ArrayList<Product> products2 = initialiseBaseline();
-
-
-        if (mDataLoader.getCustomers()[customerId] != null){
-            Vector<Order> orders = mDataLoader.getCustomers()[customerId].getOrders();
-            for (Order order : orders){
-                // for each order, sum intersection
-                int productId = order.getProductId();
-                for (int i = 0; i<productIntersection[productId].length; i++){
-                    products.get(i).incrementWeightedCount(productIntersection[productId][i]);
-                }
-            }
-        }
-
-        Collections.sort(products,new Product.WeightedCountComparator());
-        Collections.sort(products2,new Product.WeightedCountComparator());
-
-        int slotsToUseForIntersection = 3;
-
-        ArrayList<Integer> recommendations = new ArrayList<Integer>();
-        for (int i = 0; i<slotsToUseForIntersection; i++){
-            recommendations.add(products.get(i).getProductId());
-        }
-        for (int i = 0; i<6; i++){
-            if (recommendations.size() == 6) return  recommendations;
-            boolean coolFound = false;
-            for (int j = 0; j<slotsToUseForIntersection; j++){
-                if (products2.get(i).getProductId() == recommendations.get(j))
-                    coolFound = true;
-            }
-            if (coolFound) continue;
-            recommendations.add(products2.get(i).getProductId());
-        }
-        return recommendations;
-    }
 }

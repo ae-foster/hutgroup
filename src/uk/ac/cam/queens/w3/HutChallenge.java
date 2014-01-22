@@ -2,12 +2,14 @@ package uk.ac.cam.queens.w3;
 
 import uk.ac.cam.queens.w3.predictors.PredictionMaker;
 import uk.ac.cam.queens.w3.predictors.Predictor;
+import uk.ac.cam.queens.w3.predictors.ProductIntersectionPredictor;
 import uk.ac.cam.queens.w3.util.DataWriter;
 import uk.ac.cam.queens.w3.util.Evaluator;
 import uk.ac.cam.queens.w3.util.TestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +47,10 @@ public class HutChallenge {
         }
 
         // create instance of predictor
-        PredictionMaker predictor = new Predictor(mDataLoader);
+        PredictionMaker predictor = new ProductIntersectionPredictor(mDataLoader);
+        HashMap<String,Double> params = new HashMap<String,Double>();
+        params.put("baselineExpDecay", 5 * 10E-11 );
+        predictor.train(params);
 
         double totalScore = 0;
         for (TestCase testCase : testCustomers){

@@ -7,6 +7,7 @@ import uk.ac.cam.queens.w3.util.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -26,10 +27,10 @@ public class AiolliPredictor implements PredictionMaker {
     public AiolliPredictor (DataLoader dataLoader) {
         mDataLoader = dataLoader;
 
-        train();
+        train(null);
     }
 
-    public void train(){
+    public void train(HashMap<String,Double> params){
 
         // Build the intersection matrix WHICH I WILL ONLY HALF FILL!
         productIntersections = new int[mDataLoader.getNumberOfProducts()][mDataLoader.getNumberOfProducts()];
